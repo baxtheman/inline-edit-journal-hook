@@ -12,18 +12,23 @@ String title = StringPool.BLANK;
 boolean approved = false;
 boolean expired = true;
 
+boolean inlineEditEnabled = false;
+
 DDMTemplate ddmTemplate = null;
 
 if ((articleDisplay != null) && Validator.isNotNull(articleDisplay.getDDMTemplateKey())) {
+
 	ddmTemplate = DDMTemplateLocalServiceUtil.fetchTemplate(articleDisplay.getGroupId(), PortalUtil.getClassNameId(DDMStructure.class), articleDisplay.getDDMTemplateKey());
 }
 
+if (articleDisplay != null) {
 
-boolean inlineEditEnabled = JournalArticlePermission.contains(permissionChecker, article, ActionKeys.UPDATE) &&
-	ddmTemplate == null &&
-	!articleDisplay.isPaginate() &&
-	BrowserSnifferUtil.isRtf(request) &&
-	!WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(themeDisplay.getCompanyId(), scopeGroupId, JournalArticle.class.getName());
+	inlineEditEnabled = JournalArticlePermission.contains(permissionChecker, article, ActionKeys.UPDATE) &&
+		ddmTemplate == null &&
+		!articleDisplay.isPaginate() &&
+		BrowserSnifferUtil.isRtf(request) &&
+		!WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(themeDisplay.getCompanyId(), scopeGroupId, JournalArticle.class.getName());
+}
 
 JournalArticle latestArticle = null;
 
